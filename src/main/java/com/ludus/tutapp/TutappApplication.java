@@ -2,6 +2,7 @@ package com.ludus.tutapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TutappApplication {
@@ -10,4 +11,5 @@ public class TutappApplication {
         SpringApplication.run(TutappApplication.class, args);
     }
 
+    @Bean
 }
