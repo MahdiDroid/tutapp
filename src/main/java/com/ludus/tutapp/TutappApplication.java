@@ -1,5 +1,6 @@
 package com.ludus.tutapp;
 
+import com.ludus.tutapp.security.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,10 @@ public class TutappApplication {
     @Bean
     public SpringApplicationContext springApplicationContext(){
         return new SpringApplicationContext();
+    }
+    @Bean(name = "AppProperties")
+    public AppProperties appProperties(){
+        return new AppProperties();
     }
 
 }
