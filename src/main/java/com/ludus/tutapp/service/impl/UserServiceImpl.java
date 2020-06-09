@@ -6,6 +6,7 @@ import com.ludus.tutapp.service.UserService;
 import com.ludus.tutapp.shared.Utils;
 import com.ludus.tutapp.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,10 +14,14 @@ public class UserServiceImpl  implements UserService {
 
     private UserRepository userRepository;
     private Utils utils;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, Utils utils) {
+    public UserServiceImpl(UserRepository userRepository,
+                           Utils utils,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.utils = utils;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -28,7 +33,7 @@ public class UserServiceImpl  implements UserService {
         }
          UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user,userEntity);
-        userEntity.setEncryptedPassword("encrypted password test");
+        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setUserId(utils.generateUserId(30));
         UserEntity storedUser =userRepository.save(userEntity);
 
