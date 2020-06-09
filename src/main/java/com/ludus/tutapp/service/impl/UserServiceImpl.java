@@ -6,6 +6,8 @@ import com.ludus.tutapp.service.UserService;
 import com.ludus.tutapp.shared.Utils;
 import com.ludus.tutapp.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +33,9 @@ public class UserServiceImpl  implements UserService {
             throw new RuntimeException("User already exist");
 
         }
-         UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity();
         BeanUtils.copyProperties(user,userEntity);
+
         userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setUserId(utils.generateUserId(30));
         UserEntity storedUser =userRepository.save(userEntity);
@@ -40,6 +43,11 @@ public class UserServiceImpl  implements UserService {
         UserDto returnValue = new UserDto();
         BeanUtils.copyProperties(storedUser,returnValue);
         return returnValue;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
     }
 }
 

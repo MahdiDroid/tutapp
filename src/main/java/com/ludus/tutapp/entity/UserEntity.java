@@ -13,8 +13,8 @@ public class UserEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
+
     @Column(nullable = false)
     private String userId;
 
@@ -34,6 +34,8 @@ public class UserEntity implements Serializable {
 
     @Column(nullable = false )
     private Boolean emailVerificationStatus=false;
+
+
 
     public long getId() {
         return id;
