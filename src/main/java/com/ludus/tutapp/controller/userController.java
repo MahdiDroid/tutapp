@@ -6,7 +6,13 @@ import com.ludus.tutapp.service.UserService;
 import com.ludus.tutapp.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+//import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("users")
@@ -23,6 +29,20 @@ public class userController {
         UserRest returnValue = new UserRest();
         UserDto userDto = userService.getUserByUserId(id);
         BeanUtils.copyProperties(userDto,returnValue);
+        return returnValue;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserRest> getUser(@RequestParam(value = "page",defaultValue = "1") int page,
+                                  @RequestParam(value = "limit",defaultValue = "25") int limit ){
+        List<UserRest> returnValue = new ArrayList<>();
+        List<UserDto> returnedUsers = userService.getUsers(page,limit);
+
+        for (UserDto userDto:returnedUsers){
+            UserRest userModel = new UserRest();
+            BeanUtils.copyProperties(userDto,userModel);
+            returnValue.add(userModel);
+        }
         return returnValue;
     }
     @PostMapping
