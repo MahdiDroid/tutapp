@@ -37,10 +37,6 @@ public class userController {
 
         return userResponse;
     }
-    @DeleteMapping
-    public String deleteUser(){
-        return "delete User was called";
-    }
 
     @PutMapping("/{id}")
     public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails ){
@@ -51,5 +47,11 @@ public class userController {
         UserRest returnedUser = new UserRest();
         BeanUtils.copyProperties(updatedUser,returnedUser);
         return returnedUser;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable String id){
+        userService.deleteUser(id);
+        return "user deleted";
     }
 }
