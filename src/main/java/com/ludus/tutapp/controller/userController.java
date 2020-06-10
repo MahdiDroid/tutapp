@@ -5,6 +5,7 @@ import com.ludus.tutapp.model.response.UserRest;
 import com.ludus.tutapp.service.UserService;
 import com.ludus.tutapp.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,14 +13,17 @@ import org.springframework.web.bind.annotation.*;
 public class userController {
 
     private UserService userService;
-
+    @Autowired
     public userController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String getUser(){
-        return "get user was called";
+    @GetMapping("/{id}")
+    public UserRest getUser(@PathVariable String id){
+        UserRest returnValue = new UserRest();
+        UserDto userDto = userService.getUserByUserId(id);
+        BeanUtils.copyProperties(userDto,returnValue);
+        return returnValue;
     }
     @PostMapping
     public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails ){
@@ -37,8 +41,15 @@ public class userController {
     public String deleteUser(){
         return "delete User was called";
     }
-    @PutMapping
-    public String updateUser(){
-        return "update user was called";
+
+    @PutMapping("/{id}")
+    public UserRest updateUser(@PathVariable String id,@RequestBody UserDetailsRequestModel userDetails ){
+
+        UserDto userDto =new UserDto();
+        BeanUtils.copyProperties(userDetails,userDto);
+        UserDto updatedUser = userService.updateUser(id,userDto);
+        UserRest returnedUser = new UserRest();
+        BeanUtils.copyProperties(updatedUser,returnedUser);
+        return returnedUser;
     }
 }

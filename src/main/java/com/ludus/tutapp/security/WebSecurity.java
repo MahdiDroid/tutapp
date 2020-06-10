@@ -14,7 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-//@Configuration
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
@@ -41,8 +41,8 @@ public class WebSecurity  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,SecurityConstant.SIGN_UP_URL)
-                .permitAll().anyRequest().authenticated().and()
+                .antMatchers(HttpMethod.POST,SecurityConstant.SIGN_UP_URL).permitAll()
+                .anyRequest().authenticated().and()
         .addFilter(new AuthenticationFilter((authenticationManager())))
         .addFilter(new AuthorizationFilter(authenticationManager()))
         .sessionManagement()
